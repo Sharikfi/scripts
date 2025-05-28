@@ -20,7 +20,11 @@ sudo ufw default deny incoming > /dev/null
 sudo ufw default allow outgoing > /dev/null
 
 echo -e "${BLUE}Allowing SSH (port 22)...${NC}"
-sudo ufw allow 22 > /dev/null
+sudo ufw allow 22 comment 'SSH Access' > /dev/null
+
+echo -e "${BLUE}Blocking all HTTP/HTTPS traffic...${NC}"
+sudo ufw deny 80/tcp comment 'Block HTTP (Cloudflare only)' > /dev/null
+sudo ufw deny 443/tcp comment 'Block HTTPS (Cloudflare only)' > /dev/null
 
 echo -e "${BLUE}Downloading Cloudflare IP ranges...${NC}"
 v4_ips=$(curl -s https://www.cloudflare.com/ips-v4)
@@ -28,12 +32,12 @@ v6_ips=$(curl -s https://www.cloudflare.com/ips-v6)
 
 echo -e "${BLUE}Allowing Cloudflare IPs...${NC}"
 for ip in $v4_ips; do
-    sudo ufw allow from "$ip" to any port 80 proto tcp > /dev/null
-    sudo ufw allow from "$ip" to any port 443 proto tcp > /dev/null
+    sudo ufw allow from "$ip" to any port 80 proto tcp comment 'Cloudflare HTTP' > /dev/null
+    sudo ufw allow from "$ip" to any port 443 proto tcp comment 'Cloudflare HTTPS' > /dev/null
 done
 for ip in $v6_ips; do
-    sudo ufw allow from "$ip" to any port 80 proto tcp > /dev/null
-    sudo ufw allow from "$ip" to any port 443 proto tcp > /dev/null
+    sudo ufw allow from "$ip" to any port 80 proto tcp comment 'Cloudflare HTTP' > /dev/null
+    sudo ufw allow from "$ip" to any port 443 proto tcp comment 'Cloudflare HTTPS' > /dev/null
 done
 
 echo -e "${BLUE}Enabling UFW...${NC}"
