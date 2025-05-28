@@ -27,4 +27,4 @@ for ip in "${CENSYS_IPS[@]}"; do
     sudo ufw insert 1 deny from "$ip" > /dev/null
 done
 
-echo -e "${GREEN}Censys IP ranges blocked.${NC}"
+echo -e "${GREEN}Censys IP ranges blocked${NC}"
