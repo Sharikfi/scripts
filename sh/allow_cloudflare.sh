@@ -28,10 +28,12 @@ v6_ips=$(curl -s https://www.cloudflare.com/ips-v6)
 
 echo -e "${BLUE}Allowing Cloudflare IPs...${NC}"
 for ip in $v4_ips; do
-    sudo ufw allow from "$ip" to any port 80,443 > /dev/null
+    sudo ufw allow from "$ip" to any port 80 proto tcp > /dev/null
+    sudo ufw allow from "$ip" to any port 443 proto tcp > /dev/null
 done
 for ip in $v6_ips; do
-    sudo ufw allow from "$ip" to any port 80,443 > /dev/null
+    sudo ufw allow from "$ip" to any port 80 proto tcp > /dev/null
+    sudo ufw allow from "$ip" to any port 443 proto tcp > /dev/null
 done
 
 echo -e "${BLUE}Enabling UFW...${NC}"
