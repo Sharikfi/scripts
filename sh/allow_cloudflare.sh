@@ -7,10 +7,9 @@ NC='\033[0m'
 
 echo -e "${BLUE}Checking UFW installation...${NC}"
 if ! command -v ufw &> /dev/null; then
-    echo -e "${BLUE}UFW not found. Installing...${NC}"
+    echo -e "${BLUE}Installing UFW...${NC}"
     sudo apt-get update > /dev/null
     sudo apt-get install ufw -y > /dev/null
-    echo -e "${GREEN}UFW installed successfully.${NC}"
 fi
 
 echo -e "${BLUE}Resetting UFW rules...${NC}"
@@ -27,7 +26,7 @@ echo -e "${BLUE}Downloading Cloudflare IP ranges...${NC}"
 v4_ips=$(curl -s https://www.cloudflare.com/ips-v4)
 v6_ips=$(curl -s https://www.cloudflare.com/ips-v6)
 
-echo -e "${BLUE}Allowing Cloudflare IPs (HTTP/HTTPS)...${NC}"
+echo -e "${BLUE}Allowing Cloudflare IPs...${NC}"
 for ip in $v4_ips; do
     sudo ufw allow from "$ip" to any port 80,443 > /dev/null
 done
@@ -38,4 +37,4 @@ done
 echo -e "${BLUE}Enabling UFW...${NC}"
 echo "y" | sudo ufw enable > /dev/null
 
-echo -e "${GREEN}Firewall configured: Only Cloudflare IPs allowed on 80/443, SSH open on 22.${NC}"
+echo -e "${GREEN}Firewall configured: Cloudflare IPs allowed on 80/443, SSH open on 22${NC}"
