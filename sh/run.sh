@@ -5,16 +5,16 @@ GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 NC='\033[0m'
 
-REPO_URL="https://raw.githubusercontent.com/Sharikfi/scripts/refs/heads/main/sh/"
-
 echo -e "${BLUE}Downloading firewall scripts...${NC}"
-curl -sSL "$REPO_URL/allow_cloudflare.sh" -o allow_cloudflare.sh
-curl -sSL "$REPO_URL/censys_block.sh" -o censys_block.sh
-chmod +x allow_cloudflare.sh censys_block.sh
+curl -sSL https://raw.githubusercontent.com/Sharikfi/scripts/main/sh/allow_cloudflare.sh -o allow.sh
+curl -sSL https://raw.githubusercontent.com/Sharikfi/scripts/main/sh/censys_block.sh -o block.sh
+chmod +x allow.sh block.sh
 
-echo -e "${BLUE}Executing firewall setup...${NC}"
-./allow_cloudflare.sh
-./censys_block.sh
+echo -e "${BLUE}Executing allow_cloudflare.sh...${NC}"
+./allow.sh
 
-rm allow_cloudflare.sh censys_block.sh
-echo -e "${GREEN}Firewall configuration completed successfully!${NC}"
+echo -e "${BLUE}Executing censys_block.sh...${NC}"
+./block.sh
+
+rm allow.sh block.sh
+echo -e "${GREEN}Firewall configuration completed!${NC}"
